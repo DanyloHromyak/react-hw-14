@@ -6,27 +6,22 @@ import ContactForm from "./components/ContactForm.jsx";
 import ContactsList from "./components/ContactList.jsx";
 import Filter from "./components/Filter.jsx";
 
+import {
+  getAllContactsService,
+  createContactService,
+  updateContactService,
+  removeContactService,
+} from "./services/contactsServices";
+
 function App() {
-  const [contacts, setContacts] = useState(initContactsState);
+  const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }, [contacts]);
-
-  function initContactsState() {
-    const contactsLocalStorage = localStorage.getItem("contacts");
-    if (contactsLocalStorage) {
-      return JSON.parse(contactsLocalStorage);
-    } else {
-      return [];
-    }
-  }
-
-  function deleteContact(id) {
-    const newContacts = contacts.filter(contact => contact.id !== id);
-    setContacts(newContacts);
-  }
+    getAllContactsService()
+      .then(contacts => setContacts(contacts))
+      .catch(error => console.log(error));
+  }, []);
 
   function addContact(name, number) {
     const isDuplicateName = contacts.some(
@@ -43,8 +38,27 @@ function App() {
       number,
     };
 
-    setContacts([...contacts, newContact]);
-    return false;
+    createContactService(newContact).then(newContact =>
+      setContacts(prevContacts => [newContact, ...prevContacts])
+    );
+  }
+
+  function updateContact(id, name, number) {
+    updateContactService(id, name, number)
+      .then(updatedContact => {
+        setContacts(prevContacts =>
+          prevContacts.map(contact =>
+            contact.id === updatedContact.id ? updatedContact : contact
+          )
+        );
+      })
+      .catch(error => console.log(error));
+  }
+
+  function deleteContact(id) {
+    removeContactService(id)
+      .then(() => setContacts(contacts.filter(contact => contact.id !== id)))
+      .catch(error => console.log(error));
   }
 
   return (
