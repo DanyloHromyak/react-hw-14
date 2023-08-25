@@ -1,1 +1,9 @@
-{ "contacts": [] }
+{
+  "contacts": [
+    {
+      "name": "fsd",
+      "number": "42342",
+      "id": 1
+    }
+  ]
+}

@@ -24,13 +24,11 @@ function App() {
   }, []);
 
   function addContact(name, number) {
-    const isDuplicateName = contacts.some(
-      contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
-    );
-
+    const isDuplicateName = contacts.find(contact => contact.name === name)
     if (isDuplicateName) {
-      return true;
-    }
+      alert(`${name} is already in contacts`);
+      return;
+    };
 
     const newContact = {
       id: nanoid(),
@@ -38,8 +36,8 @@ function App() {
       number,
     };
 
-    createContactService(newContact).then(newContact =>
-      setContacts(prevContacts => [newContact, ...prevContacts])
+    createContactService(name, number).then(newContact =>
+      setContacts(prevContacts => [...prevContacts, newContact])
     );
   }
 

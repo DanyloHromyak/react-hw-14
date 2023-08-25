@@ -7,13 +7,6 @@ function ContactForm({ addContact }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const isDuplicateName = addContact(name);
-
-    if (isDuplicateName) {
-      alert("This name is already in contacts");
-      return;
-    }
-
     addContact(name, number);
     setName("");
     setNumber("");
@@ -48,6 +41,7 @@ function ContactForm({ addContact }) {
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           variant="outlined"
+          required
           onChange={e => setNumber(e.target.value)}
           type="tel"
         />
