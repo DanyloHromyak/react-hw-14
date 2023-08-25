@@ -9,7 +9,6 @@ import Filter from "./components/Filter.jsx";
 import {
   getAllContactsService,
   createContactService,
-  updateContactService,
   removeContactService,
 } from "./services/contactsServices";
 
@@ -39,18 +38,6 @@ function App() {
     createContactService(name, number).then(newContact =>
       setContacts(prevContacts => [...prevContacts, newContact])
     );
-  }
-
-  function updateContact(id, name, number) {
-    updateContactService(id, name, number)
-      .then(updatedContact => {
-        setContacts(prevContacts =>
-          prevContacts.map(contact =>
-            contact.id === updatedContact.id ? updatedContact : contact
-          )
-        );
-      })
-      .catch(error => console.log(error));
   }
 
   function deleteContact(id) {

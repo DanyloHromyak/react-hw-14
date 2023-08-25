@@ -8,6 +8,3 @@ export const createContactService = (name, number) =>
 
 export const updateContactService = (id, name, number) =>
   axios.patch(`/contacts/${id}`, { name, number }).then(res => res.data);
-
-export const removeContactService = id =>
-  axios.delete(`/contacts/${id}`).then(res => res.data);
