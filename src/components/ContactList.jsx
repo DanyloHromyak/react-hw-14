@@ -7,8 +7,10 @@ function ContactList({ contacts, filter, deleteContact }) {
   );
 
   return (
-    <Typography marginTop="20px" variant="h3" contacts={contacts}>
-      Contacts
+    <>
+      <Typography marginTop="20px" variant="h3" contacts={contacts}>
+        Contacts
+      </Typography>
       <ul>
         <AnimatePresence>
           {filteredContacts.map(contact => (
@@ -41,7 +43,7 @@ function ContactList({ contacts, filter, deleteContact }) {
           ))}
         </AnimatePresence>
       </ul>
-    </Typography>
+    </>
   );
 }
 

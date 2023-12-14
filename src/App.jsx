@@ -6,55 +6,45 @@ import ContactForm from "./components/ContactForm.jsx";
 import ContactsList from "./components/ContactList.jsx";
 import Filter from "./components/Filter.jsx";
 
-import {
-  getAllContactsService,
-  createContactService,
-  removeContactService,
-} from "./services/contactsServices";
-
 function App() {
   const [contacts, setContacts] = useState([]);
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
   const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    getAllContactsService()
-      .then(contacts => setContacts(contacts))
-      .catch(error => console.log(error));
-  }, []);
-
-  function addContact(name, number) {
-    const isDuplicateName = contacts.find(contact => contact.name === name)
-    if (isDuplicateName) {
-      alert(`${name} is already in contacts`);
-      return;
-    };
-
+  function createContact() {
     const newContact = {
+      name: name,
       id: nanoid(),
-      name,
-      number,
+      number: number,
     };
-
-    createContactService(name, number).then(newContact =>
-      setContacts(prevContacts => [...prevContacts, newContact])
+    setContacts(prevContacts => [newContact, ...prevContacts]);
+  }
+  function removeContact() {
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== id)
     );
   }
-
-  function deleteContact(id) {
-    removeContactService(id)
-      .then(() => setContacts(contacts.filter(contact => contact.id !== id)))
-      .catch(error => console.log(error));
+  function handleSubmit(e) {
+    e.preventDefault();
+    createContact();
+  }
+  function filterContacts() {
+    const filteredContacts = contacts.filter(contact => {
+      return contact.name.includes(filter);
+    });
+    return filteredContacts;
   }
 
   return (
     <Container>
       <Typography variant="h3">Phonebook</Typography>
-      <ContactForm addContact={addContact} />
+      <ContactForm addContact={1} />
       <Filter filter={filter} setFilter={setFilter} />
       <ContactsList
         contacts={contacts}
         filter={filter}
-        deleteContact={deleteContact}
+        deleteContact={1}
       />
     </Container>
   );
